@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Flour & Fire Forum</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5efe3;
+    --parchment: #ede3cc;
+    --warm-brown: #6b3f1f;
+    --dark-brown: #2c1810;
+    --caramel: #c47c2b;
+    --rust: #a8421a;
+    --sage: #7a8c6e;
+    --blush: #d4876b;
+    --ink: #1e120a;
+    --paper: #faf6ed;
+    --shadow: rgba(44, 24, 16, 0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(196, 124, 43, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(168, 66, 26, 0.06) 0%, transparent 50%);
+  }
+
+  /* HEADER */
+  header {
+    background: var(--dark-brown);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.015) 40px,
+      rgba(255,255,255,0.015) 80px
+    );
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 40px 28px;
+    display: flex;
+    align-items: flex-end;
+    gap: 32px;
+    position: relative;
+  }
+
+  .logo-mark {
+    font-size: 52px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+  }
+
+  .logo-text h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--parchment);
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+
+  .logo-text p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--caramel);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  nav {
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  nav button {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid rgba(237, 227, 204, 0.25);
+    color: var(--parchment);
+    padding: 8px 16px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  nav button:hover, nav button.active {
+    background: var(--caramel);
+    border-color: var(--caramel);
+    color: var(--dark-brown);
+  }
+
+  /* BANNER */
+  .banner {
+    background: var(--caramel);
+    padding: 10px 40px;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--dark-brown);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 40px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* COMPOSE FORM */
+  .compose-card {
+    background: var(--paper);
+    border: 1px solid var(--parchment);
+    border-radius: 6px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 24px var(--shadow);
+    position: relative;
+  }
+
+  .compose-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--caramel), var(--rust), var(--blush));
+    border-radius: 6px 6px 0 0;
+  }
+
+  .compose-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--warm-brown);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--warm-brown);
+  }
+
+  input, textarea, select {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    background: var(--cream);
+    border: 1px solid var(--parchment);
+    border-radius: 4px;
+    padding: 10px 14px;
+    color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    width: 100%;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--caramel);
+    box-shadow: 0 0 0 3px rgba(196, 124, 43, 0.12);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+  }
+
+  .tags-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .tag-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--parchment);
+    background: transparent;
+    color: var(--warm-brown);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .tag-btn:hover, .tag-btn.selected {
+    background: var(--warm-brown);
+    border-color: var(--warm-brown);
+    color: var(--cream);
+  }
+
+  .submit-btn {
+    background: var(--warm-brown);
+    color: var(--cream);
+    border: none;
+    padding: 12px 28px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .submit-btn:hover {
+    background: var(--rust);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(168, 66, 26, 0.28);
+  }
+
+  .submit-btn:active { transform: translateY(0); }
+
+  /* POSTS */
+  .posts-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .posts-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--dark-brown);
+  }
+
+  .post-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--sage);
+    letter-spacing: 0.1em;
+  }
+
+  .sort-bar {
+    margin-left: auto;
+    display: flex;
+    gap: 4px;
+  }
+
+  .sort-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid var(--parchment);
+    background: transparent;
+    border-radius: 3px;
+    color: var(--warm-brown);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .sort-btn.active, .sort-btn:hover {
+    background: var(--parchment);
+  }
+
+  /* POST CARD */
+  .post-card {
+    background: var(--paper);
+    border: 1px solid var(--parchment);
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: slideIn 0.35s ease both;
+  }
+
+  .post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--shadow);
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .post-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    border: 2px solid var(--parchment);
+  }
+
+  .post-meta {
+    flex: 1;
+  }
+
+  .post-author {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--warm-brown);
+  }
+
+  .post-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: var(--sage);
+    margin-top: 2px;
+  }
+
+  .post-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--parchment);
+    color: var(--warm-brown);
+    border: 1px solid rgba(107, 63, 31, 0.2);
+  }
+
+  .post-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--dark-brown);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .post-body {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: #3a2010;
+  }
+
+  .recipe-box {
+    background: var(--cream);
+    border-left: 3px solid var(--caramel);
+    border-radius: 0 4px 4px 0;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .recipe-box strong {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--caramel);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .post-footer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--parchment);
+  }
+
+  .action-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--parchment);
+    padding: 5px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    color: var(--warm-brown);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .action-btn:hover {
+    background: var(--parchment);
+  }
+
+  .action-btn.liked {
+    background: var(--rust);
+    border-color: var(--rust);
+    color: white;
+  }
+
+  .action-btn.saved {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: white;
+  }
+
+  /* REPLIES */
+  .replies {
+    margin-top: 0;
+    display: none;
+    padding-left: 0;
+  }
+
+  .replies.open { display: block; }
+
+  .reply {
+    background: var(--cream);
+    border-left: 2px solid var(--parchment);
+    margin: 12px 0 0 0;
+    padding: 14px 16px;
+    border-radius: 0 4px 4px 0;
+    animation: slideIn 0.25s ease;
+  }
+
+  .reply-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .reply-author {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--warm-brown);
+  }
+
+  .reply-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--sage);
+  }
+
+  .reply-text {
+    font-size: 0.97rem;
+    line-height: 1.6;
+    color: #3a2010;
+  }
+
+  .reply-form {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .reply-form input {
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+
+  .reply-submit {
+    background: var(--caramel);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+
+  .reply-submit:hover { background: var(--rust); }
+
+  /* SIDEBAR */
+  .sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+  .sidebar-card {
+    background: var(--paper);
+    border: 1px solid var(--parchment);
+    border-radius: 6px;
+    padding: 22px 22px;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+
+  .sidebar-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--dark-brown);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--parchment);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .leaderboard-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(237, 227, 204, 0.5);
+  }
+
+  .leaderboard-item:last-child { border-bottom: none; }
+
+  .rank {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    width: 18px;
+    color: var(--caramel);
+    font-weight: 500;
+  }
+
+  .lb-name {
+    font-size: 0.97rem;
+    flex: 1;
+    color: var(--ink);
+  }
+
+  .lb-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--sage);
+  }
+
+  .filter-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--parchment);
+    background: transparent;
+    color: var(--warm-brown);
+    cursor: pointer;
+    margin: 3px 3px;
+    transition: all 0.15s;
+  }
+
+  .filter-tag:hover, .filter-tag.active {
+    background: var(--warm-brown);
+    color: var(--cream);
+    border-color: var(--warm-brown);
+  }
+
+  .tip-text {
+    font-size: 0.97rem;
+    line-height: 1.65;
+    color: var(--warm-brown);
+    font-style: italic;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--sage);
+  }
+  .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
+  .empty-state p { font-style: italic; font-size: 1.05rem; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--dark-brown);
+    color: var(--parchment);
+    padding: 14px 22px;
+    border-radius: 6px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    font-style: italic;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
+    z-index: 999;
+    border-left: 3px solid var(--caramel);
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* SEARCH */
+  .search-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .search-bar input {
+    flex: 1;
+    background: var(--paper);
+  }
+
+  .search-bar button {
+    background: var(--warm-brown);
+    color: var(--cream);
+    border: none;
+    padding: 10px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .search-bar button:hover { background: var(--rust); }
+
+  @media (max-width: 760px) {
+    .container { grid-template-columns: 1fr; padding: 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .header-inner { flex-wrap: wrap; padding: 20px; }
+    nav { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-mark">🍞</div>
+    <div class="logo-text">
+      <h1>Flour & Fire</h1>
+      <p>A bakers' forum — share, bake, repeat</p>
+    </div>
+    <nav>
+      <button class="active" onclick="setView('forum')">Forum</button>
+      <button onclick="setView('forum')">My Recipes</button>
+      <button onclick="setView('forum')">Saved</button>
+    </nav>
+  </div>
+</header>
+
+<div class="banner">🌾 This week's challenge: Sourdough Discard Creations — share yours!</div>
+
+<div class="container">
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- COMPOSE -->
+    <div class="compose-card">
+      <h2>✍️ Share a Recipe</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="author" placeholder="e.g. Clara Whitmore" />
+        </div>
+        <div class="form-group">
+          <label>Recipe Title</label>
+          <input type="text" id="title" placeholder="e.g. Brown Butter Cardamom Rolls" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Your Message</label>
+          <textarea id="body" placeholder="Tell us about this recipe — where it came from, what makes it special, tips you've discovered..."></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Recipe (Ingredients & Steps)</label>
+          <textarea id="recipe" placeholder="Optional — paste your full recipe here and it'll be highlighted in a recipe block" style="min-height:75px;"></textarea>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label>Category</label>
+        <div class="tags-row" id="tagBtns">
+          <button class="tag-btn selected" onclick="selectTag(this,'Bread')">🍞 Bread</button>
+          <button class="tag-btn" onclick="selectTag(this,'Pastry')">🥐 Pastry</button>
+          <button class="tag-btn" onclick="selectTag(this,'Cake')">🎂 Cake</button>
+          <button class="tag-btn" onclick="selectTag(this,'Cookies')">🍪 Cookies</button>
+          <button class="tag-btn" onclick="selectTag(this,'Sourdough')">🫙 Sourdough</button>
+          <button class="tag-btn" onclick="selectTag(this,'Pie')">🥧 Pie</button>
+          <button class="tag-btn" onclick="selectTag(this,'Gluten-Free')">🌱 Gluten-Free</button>
+          <button class="tag-btn" onclick="selectTag(this,'Seasonal')">🍂 Seasonal</button>
+        </div>
+      </div>
+      <button class="submit-btn" onclick="submitPost()">Post to the Forum →</button>
+    </div>
+
+    <!-- SEARCH + FILTER -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search recipes, ingredients, bakers..." oninput="renderPosts()" />
+      <button onclick="renderPosts()">Search</button>
+    </div>
+
+    <!-- POSTS -->
+    <div class="posts-header">
+      <h2>Recent Posts</h2>
+      <span class="post-count" id="postCount">0 recipes shared</span>
+      <div class="sort-bar">
+        <button class="sort-btn active" onclick="setSort('new',this)">Newest</button>
+        <button class="sort-btn" onclick="setSort('liked',this)">Most Loved</button>
+      </div>
+    </div>
+
+    <div id="postsContainer"></div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <h3>🔍 Browse by Category</h3>
+      <div>
+        <button class="filter-tag active" onclick="filterByTag('All', this)">All</button>
+        <button class="filter-tag" onclick="filterByTag('Bread', this)">🍞 Bread</button>
+        <button class="filter-tag" onclick="filterByTag('Pastry', this)">🥐 Pastry</button>
+        <button class="filter-tag" onclick="filterByTag('Cake', this)">🎂 Cake</button>
+        <button class="filter-tag" onclick="filterByTag('Cookies', this)">🍪 Cookies</button>
+        <button class="filter-tag" onclick="filterByTag('Sourdough', this)">🫙 Sourdough</button>
+        <button class="filter-tag" onclick="filterByTag('Pie', this)">🥧 Pie</button>
+        <button class="filter-tag" onclick="filterByTag('Gluten-Free', this)">🌱 GF</button>
+        <button class="filter-tag" onclick="filterByTag('Seasonal', this)">🍂 Seasonal</button>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>🏆 Top Bakers</h3>
+      <div id="leaderboard"></div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>💡 Baker's Tip</h3>
+      <p class="tip-text" id="bakerTip"></p>
+    </div>
+  </aside>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── DATA ──────────────────────────────────────────────────────────────
+  let posts = [
+    {
+      id: 1,
+      author: "Margaux Delacroix",
+      avatar: "👩‍🍳",
+      avatarBg: "#f5d0b5",
+      title: "Lavender Honey Sourdough",
+      body: "This has become my Sunday ritual. The lavender is subtle — floral, not soapy — and the honey gives the crust a gorgeous amber colour. Best with salted butter straight from the oven.",
+      recipe: "500g bread flour · 375g water · 100g active starter · 10g salt · 2 tbsp honey · 1 tsp dried lavender\n\nMix flour and water, autolyse 30 min. Add starter, honey, salt, and lavender. Perform 4 sets of stretch & fold over 2 hours. Bulk ferment 4–6 hrs. Shape, cold proof overnight. Bake in Dutch oven at 250°C (lid on 20 min, off 25 min).",
+      tag: "Sourdough",
+      time: Date.now() - 7200000,
+      likes: 24,
+      liked: false,
+      saved: false,
+      replies: [
+        { author: "Theo Bianchi", avatar: "👨‍🍳", time: Date.now()-3600000, text: "Made this last weekend — the lavender really is perfect. I added a touch of lemon zest too!" }
+      ]
+    },
+    {
+      id: 2,
+      author: "Priya Nair",
+      avatar: "🧑‍🍳",
+      avatarBg: "#d4e8c7",
+      title: "Cardamom Rose Shortbread",
+      body: "Inspired by my grandmother's chai recipe. These melt on the tongue. Use green cardamom freshly ground — pre-ground just doesn't have the same perfume.",
+      recipe: "250g unsalted butter (room temp) · 100g icing sugar · 1 tsp ground cardamom · ½ tsp rose water · 350g plain flour · pinch of salt\n\nCream butter and sugar until pale. Add cardamom and rose water. Mix in flour and salt until crumbly. Press into a ball, chill 30 min. Roll to 8mm, cut into rounds. Bake 160°C for 18–20 min until just golden at edges.",
+      tag: "Cookies",
+      time: Date.now() - 18000000,
+      likes: 41,
+      liked: false,
+      saved: false,
+      replies: [
+        { author: "Margaux Delacroix", avatar: "👩‍🍳", time: Date.now()-14400000, text: "Rose water + cardamom is a dream combo. Pinned this immediately." },
+        { author: "Sam Kowalski", avatar: "🧑‍🍳", time: Date.now()-7200000, text: "Tried this with a bit of pistachio dust on top — highly recommend!" }
+      ]
+    },
+    {
+      id: 3,
+      author: "Theo Bianchi",
+      avatar: "👨‍🍳",
+      avatarBg: "#d0d8f5",
+      title: "Brown Butter Apple Galette",
+      body: "Autumn in a pastry shell. The browned butter in the crust adds this nutty depth that regular butter just can't match. Don't skip the cinnamon crème fraîche — it's the soul of the dish.",
+      recipe: "Crust: 200g flour · 120g brown butter (chilled) · 3 tbsp ice water · ½ tsp salt\nFilling: 4 apples (peeled, thin-sliced) · 60g sugar · 1 tsp cinnamon · 1 tbsp cornstarch · juice of ½ lemon\n\nMake pastry, rest 1hr. Roll into rough circle. Toss apples in sugar, cornstarch, cinnamon, lemon. Pile onto pastry leaving 5cm border. Fold edges over. Brush with egg wash, sprinkle demerara. Bake 190°C for 40 min.",
+      tag: "Pie",
+      time: Date.now() - 86400000,
+      likes: 18,
+      liked: false,
+      saved: false,
+      replies: []
+    }
+  ];
+
+  let selectedTag = 'Bread';
+  let activeFilter = 'All';
+  let sortMode = 'new';
+
+  const tips = [
+    "Always weigh your flour — one cup can vary by 30g depending on how it's scooped.",
+    "Cold butter makes flakier pastry. Warm butter makes tenderer cookies. Both are magnificent.",
+    "A little steam in the first 15 minutes of baking gives bread a crackling crust.",
+    "Autolyse: mixing just flour and water before adding salt improves gluten development effortlessly.",
+    "If your sourdough smells like acetone, it's hungry. Feed it and wait for the next rise.",
+    "Rest your cookie dough in the fridge overnight — the flavour deepens considerably.",
+    "For even baking, rotate your tray halfway through. Ovens have hot spots.",
+  ];
+
+  // ── HELPERS ───────────────────────────────────────────────────────────
+  function timeAgo(ts) {
+    const diff = Math.floor((Date.now()-ts)/1000);
+    if (diff<60) return 'just now';
+    if (diff<3600) return Math.floor(diff/60)+' min ago';
+    if (diff<86400) return Math.floor(diff/3600)+' hr ago';
+    return Math.floor(diff/86400)+' day(s) ago';
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  function selectTag(btn, tag) {
+    document.querySelectorAll('#tagBtns .tag-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedTag = tag;
+  }
+
+  function filterByTag(tag, btn) {
+    document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = tag;
+    renderPosts();
+  }
+
+  function setSort(mode, btn) {
+    sortMode = mode;
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderPosts();
+  }
+
+  function setView() {}
+
+  // ── RENDER POSTS ──────────────────────────────────────────────────────
+  function renderPosts() {
+    const container = document.getElementById('postsContainer');
+    const search = document.getElementById('searchInput').value.toLowerCase();
+
+    let filtered = posts.filter(p => {
+      const matchTag = activeFilter === 'All' || p.tag === activeFilter;
+      const matchSearch = !search ||
+        p.title.toLowerCase().includes(search) ||
+        p.body.toLowerCase().includes(search) ||
+        p.author.toLowerCase().includes(search) ||
+        (p.recipe||'').toLowerCase().includes(search);
+      return matchTag && matchSearch;
+    });
+
+    if (sortMode === 'liked') {
+      filtered = [...filtered].sort((a,b) => b.likes - a.likes);
+    } else {
+      filtered = [...filtered].sort((a,b) => b.time - a.time);
+    }
+
+    document.getElementById('postCount').textContent = filtered.length + ' recipe' + (filtered.length !== 1 ? 's' : '') + ' shared';
+
+    if (!filtered.length) {
+      container.innerHTML = `<div class="empty-state"><div class="icon">🧁</div><p>No recipes found — be the first to share one!</p></div>`;
+      return;
+    }
+
+    container.innerHTML = filtered.map(p => `
+      <div class="post-card" id="post-${p.id}">
+        <div class="post-top">
+          <div class="avatar" style="background:${p.avatarBg}">${p.avatar}</div>
+          <div class="post-meta">
+            <div class="post-author">${p.author}</div>
+            <div class="post-time">${timeAgo(p.time)}</div>
+          </div>
+          <span class="post-tag">${p.tag}</span>
+        </div>
+        <div class="post-title">${p.title}</div>
+        <div class="post-body">${p.body}</div>
+        ${p.recipe ? `<div class="recipe-box"><strong>📋 Recipe</strong>${p.recipe.replace(/\n/g,'<br>')}</div>` : ''}
+        <div class="post-footer">
+          <button class="action-btn ${p.liked?'liked':''}" onclick="toggleLike(${p.id})">
+            ${p.liked ? '❤️' : '🤍'} ${p.likes}
+          </button>
+          <button class="action-btn ${p.saved?'saved':''}" onclick="toggleSave(${p.id})">
+            ${p.saved ? '🔖 Saved' : '📌 Save'}
+          </button>
+          <button class="action-btn" onclick="toggleReplies(${p.id})">
+            💬 ${p.replies.length} ${p.replies.length === 1 ? 'reply' : 'replies'}
+          </button>
+        </div>
+        <div class="replies" id="replies-${p.id}">
+          ${p.replies.map(r => `
+            <div class="reply">
+              <div class="reply-header">
+                <span style="font-size:1.1rem">${r.avatar}</span>
+                <span class="reply-author">${r.author}</span>
+                <span class="reply-time">${timeAgo(r.time)}</span>
+              </div>
+              <div class="reply-text">${r.text}</div>
+            </div>
+          `).join('')}
+          <div class="reply-form">
+            <input type="text" placeholder="Add a reply..." id="replyInput-${p.id}" onkeydown="if(event.key==='Enter')submitReply(${p.id})" />
+            <button class="reply-submit" onclick="submitReply(${p.id})">Reply</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── INTERACTIONS ──────────────────────────────────────────────────────
+  function toggleLike(id) {
+    const p = posts.find(x => x.id === id);
+    p.liked = !p.liked;
+    p.likes += p.liked ? 1 : -1;
+    renderPosts();
+    if (p.liked) showToast('Recipe loved! ❤️');
+  }
+
+  function toggleSave(id) {
+    const p = posts.find(x => x.id === id);
+    p.saved = !p.saved;
+    renderPosts();
+    showToast(p.saved ? 'Recipe saved to your collection 📌' : 'Recipe removed from saved');
+  }
+
+  function toggleReplies(id) {
+    const el = document.getElementById('replies-'+id);
+    el.classList.toggle('open');
+    if (el.classList.contains('open')) {
+      setTimeout(() => {
+        const inp = document.getElementById('replyInput-'+id);
+        if(inp) inp.focus();
+      }, 50);
+    }
+  }
+
+  function submitReply(id) {
+    const input = document.getElementById('replyInput-'+id);
+    const text = input.value.trim();
+    if (!text) return;
+    const p = posts.find(x => x.id === id);
+    const avatars = ['🧑‍🍳','👩‍🍳','👨‍🍳','🧑'];
+    p.replies.push({
+      author: 'You',
+      avatar: avatars[Math.floor(Math.random()*avatars.length)],
+      time: Date.now(),
+      text
+    });
+    renderPosts();
+    setTimeout(() => {
+      const rep = document.getElementById('replies-'+id);
+      if(rep) rep.classList.add('open');
+    }, 10);
+    showToast('Reply posted! 💬');
+  }
+
+  function submitPost() {
+    const author = document.getElementById('author').value.trim();
+    const title = document.getElementById('title').value.trim();
+    const body = document.getElementById('body').value.trim();
+    const recipe = document.getElementById('recipe').value.trim();
+
+    if (!author || !title || !body) {
+      showToast('Please fill in your name, a title, and your message!');
+      return;
+    }
+
+    const avatars = ['🧑‍🍳','👩‍🍳','👨‍🍳','🧑'];
+    const bgs = ['#f5d0b5','#d4e8c7','#d0d8f5','#f5e0d0','#e8d4f0'];
+    const newPost = {
+      id: Date.now(),
+      author,
+      avatar: avatars[Math.floor(Math.random()*avatars.length)],
+      avatarBg: bgs[Math.floor(Math.random()*bgs.length)],
+      title,
+      body,
+      recipe,
+      tag: selectedTag,
+      time: Date.now(),
+      likes: 0,
+      liked: false,
+      saved: false,
+      replies: []
+    };
+
+    posts.unshift(newPost);
+    document.getElementById('author').value = '';
+    document.getElementById('title').value = '';
+    document.getElementById('body').value = '';
+    document.getElementById('recipe').value = '';
+    activeFilter = 'All';
+    document.querySelectorAll('.filter-tag').forEach((b,i) => {
+      b.classList.toggle('active', i === 0);
+    });
+    sortMode = 'new';
+    document.querySelectorAll('.sort-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+    renderPosts();
+    renderLeaderboard();
+    showToast('Your recipe has been shared! 🎉');
+    window.scrollTo({ top: document.querySelector('.posts-header').offsetTop - 20, behavior: 'smooth' });
+  }
+
+  // ── LEADERBOARD ───────────────────────────────────────────────────────
+  function renderLeaderboard() {
+    const counts = {};
+    posts.forEach(p => {
+      counts[p.author] = (counts[p.author]||0) + 1;
+    });
+    const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,5);
+    const medals = ['🥇','🥈','🥉','4.','5.'];
+    document.getElementById('leaderboard').innerHTML = sorted.map(([name,count],i) => `
+      <div class="leaderboard-item">
+        <span class="rank">${medals[i]}</span>
+        <span class="lb-name">${name}</span>
+        <span class="lb-count">${count} recipe${count>1?'s':''}</span>
+      </div>
+    `).join('');
+  }
+
+  // ── INIT ──────────────────────────────────────────────────────────────
+  document.getElementById('bakerTip').textContent = tips[Math.floor(Math.random()*tips.length)];
+  renderPosts();
+  renderLeaderboard();
+</script>
+</body>
+</html>
